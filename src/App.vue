@@ -19,6 +19,8 @@ export default {
 </script>
 
 <style>
+@import './assets/css/global.css';
+
   .main {
     float: left;
     width: 95%;
