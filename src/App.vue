@@ -18,8 +18,9 @@ export default {
 }
 </script>
 
-<style>
+<style lang="scss">
 @import './assets/css/global.css';
+  $Suc:#13CE66; 
 
   .main {
     float: left;

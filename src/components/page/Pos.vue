@@ -34,6 +34,13 @@
           <div class="often-goods">
             <div class="title">常用商品</div>
             <div class="often-gooos-list">
+              <!-- 筛选 -->
+              <p class="filter-price">
+                <span>价格筛选</span>
+                <el-button :plain="true" @click="filterPrice(0)">0-15元</el-button>
+                <el-button :plain="true" @click="filterPrice(1)">15-30元</el-button>
+                <el-button :plain="true" @click="filterPrice(2)">30元以上</el-button>
+              </p>
               <ul>
                 <li v-for="items in oftenGoods">
                   <span>{{items.goodsName}}</span>
@@ -118,6 +125,7 @@ export default {
     }
   },
   computed:{
+    
   },
   mounted:function() {
     var orderHeight = document.body.clientHeight;
@@ -138,6 +146,39 @@ export default {
 
   },
   methods:{
+    filterPrice(status){
+      switch(status)
+      {
+        case 0:
+          this.filter(0,15);
+          break;
+        case 1:
+          this.filter(15,30);
+          break; 
+        default:
+          this.filter(30,30);  
+      }
+      this.$message({
+          message: '筛选成功',
+          type: 'success',
+          duration:1000
+      });
+    },
+    filter(min,max){
+      var _thisData = this.$store.state.oGoods;
+      this.oftenGoods = [];
+      //console.log(_thisData.length);
+      // return false;
+      if(min!=max){ // 执行区间
+        for(var i=0;i<_thisData.length;i++){
+          if(_thisData[i].price>min && _thisData[i].price<=max){
+            this.oftenGoods.push(_thisData[i]);
+          }
+        }
+      }else{ // 执行大于
+        console.log(2);
+      }
+    },
   },
   store
 
@@ -159,6 +200,9 @@ export default {
     border-bottom:1px solid #D3dce6;
     background-color: #F9FAFC;
     padding: 10px;
+  }
+  .filter-price {
+    padding: 16px;
   }
   .often-gooos-list ul li{
     list-style: none;

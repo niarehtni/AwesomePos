@@ -18,7 +18,6 @@ const mutations = {
     },
     typeGoods(state,obj){ //食物分类
         state.tGoods = obj;
-       console.log("obj,",state.tGoods);
     }
 
 }
