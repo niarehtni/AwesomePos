@@ -37,9 +37,9 @@
               <!-- 筛选 -->
               <p class="filter-price">
                 <span>价格筛选</span>
-                <el-button :plain="true" @click="filterPrice(0)">0-15元</el-button>
-                <el-button :plain="true" @click="filterPrice(1)">15-30元</el-button>
-                <el-button :plain="true" @click="filterPrice(2)">30元以上</el-button>
+                <a v-for="item in filterData" class="filter-price_btn" href="javascript:void(0)">
+                  <el-button :plain="true" @click="filterPrice(item.status)">{{ item.txt }}</el-button>
+                </a>
               </p>
               <ul>
                 <li v-for="items in oftenGoods">
@@ -111,17 +111,35 @@ export default {
   name: 'pos',
   data(){
     return {
-      tableData:[
+      tableData:[ // 点餐食品
         { goodsName: '可口可乐',price: 8,count:1 },
         { goodsName: '香辣鸡腿堡',price: 15,count:1 },
         { goodsName: '爱心薯条',price: 8,count:1 },
         { goodsName: '甜筒',price: 8,count:1 }
       ],
-      oftenGoods:[],
-      type0Goods:[],
+      oftenGoods:[], // 常见商品
+      type0Goods:[],  // 分类商品
       type1Goods:[],
       type2Goods:[],
       type3Goods:[],
+      filterData:[ //筛选价格
+        {
+          txt:'全部',
+          status:'10'
+        },
+        {
+          txt:'0-15元',
+          status:'0'
+        },
+        {
+          txt:'15-30元',
+          status:'1'
+        },
+        {
+          txt:'30元以上',
+          status:'2'
+        },
+      ],
     }
   },
   computed:{
@@ -149,10 +167,13 @@ export default {
     filterPrice(status){
       switch(status)
       {
-        case 0:
+        case "10":
+          this.filter(1,0);
+          break;
+        case "0":
           this.filter(0,15);
           break;
-        case 1:
+        case "1":
           this.filter(15,30);
           break; 
         default:
@@ -167,16 +188,20 @@ export default {
     filter(min,max){
       var _thisData = this.$store.state.oGoods;
       this.oftenGoods = [];
-      //console.log(_thisData.length);
-      // return false;
-      if(min!=max){ // 执行区间
+      if(min<max){ // 执行区间
         for(var i=0;i<_thisData.length;i++){
           if(_thisData[i].price>min && _thisData[i].price<=max){
             this.oftenGoods.push(_thisData[i]);
           }
         }
-      }else{ // 执行大于
-        console.log(2);
+      }else if(min=max){ // 执行大于
+        for(var i=0;i<_thisData.length;i++) {
+          if(_thisData[i].price>min) {
+            this.oftenGoods.push(_thisData[i]);
+          }
+        }
+      }else{
+        this.oftenGoods = this.$store.state.oGoods
       }
     },
   },
@@ -203,6 +228,9 @@ export default {
   }
   .filter-price {
     padding: 16px;
+      .filter-price_btn {
+        margin: 0 4px;
+      }
   }
   .often-gooos-list ul li{
     list-style: none;

@@ -29,4 +29,7 @@ export default {
     background-color: #EFF2F7;
     overflow: hidden;
   }
+  .main-right {
+     padding:10px; 
+  }
 </style>

@@ -1,7 +1,7 @@
 <template>
   <div class="left-nav">
         <ul>
-            <li>
+            <li class="on">
                 <i class="icon iconfont icon-goumai"></i>
                 <div>收银</div>
             </li>
@@ -54,6 +54,9 @@ export default {
                 &:hover {
                     background:#5d96c1;
                 }
+            }
+            .on {
+                background:#5d96c1;
             }
         }
 
