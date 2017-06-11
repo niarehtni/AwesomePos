@@ -1,7 +1,9 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 import Pos from '@/components/page/Pos'
-import Shop from '@/components/page/shop'
+import Shop from '@/components/shop/shop'
+import ShopModule from '@/components/shop/shopModule'
+import ShopInit from '@/components/shop/shopInit'
 import Goods from '@/components/page/goods'
 import Member from '@/components/page/member'
 import Set from '@/components/page/set'
@@ -18,8 +20,12 @@ export default new Router({
     },
     { // 店铺
       path: '/shop',
-      name: 'Shop',
-      component: Shop
+      // name: 'Shop',
+      component: Shop,
+      children:[
+        {path:'sm/:id',name:'ShopModule',component:ShopModule},
+        {path:'si',name:'ShopInit',component:ShopInit},
+      ]
     },
     { // 商品
       path: '/goods',

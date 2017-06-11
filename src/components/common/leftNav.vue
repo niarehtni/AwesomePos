@@ -1,26 +1,26 @@
 <template>
   <div class="left-nav">
         <ul>
-            <li class="on">
+            <router-link tag="li" :to="{ path:'/' }" class="on">
                 <i class="icon iconfont icon-goumai"></i>
                 <div>收银</div>
-            </li>
-            <li>
+            </router-link>
+            <router-link tag="li" :to="{ path:'/shop' }">
                 <i class="icon iconfont icon-dianpu"></i>
                 <div>店铺</div>
-            </li>
-            <li>
+            </router-link>
+            <router-link tag="li" :to="{ path:'/goods' }">
                 <i class="icon iconfont icon-hanbao"></i>
                 <div>商品</div>
-            </li>
-            <li>
+            </router-link>
+            <router-link tag="li" :to="{ path:'/member' }">
                 <i class="icon iconfont icon-huiyuanqia"></i>
                 <div>会员</div>
-            </li>
-            <li>
+            </router-link>
+            <router-link tag="li" :to="{ path:'/set' }">
                 <i class="icon iconfont icon-gongnengjianyi"></i>
                 <div>统计</div>
-            </li>
+            </router-link>
         </ul>
   </div>
 </template>
