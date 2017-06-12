@@ -8,6 +8,7 @@ import Goods from '@/components/page/goods'
 import Member from '@/components/page/member'
 import Set from '@/components/page/set'
 import Error from '@/components/common/error'
+import FoodDetails from '@/components/common/foodDetails'
 
 Vue.use(Router)
 
@@ -18,6 +19,11 @@ export default new Router({
       path: '/',
       name: 'Pos',
       component: Pos
+    },
+    { // 商品详情
+      path: '/foodDetails/:foodImg/:foodName',
+      name: 'FoodDetails',
+      component: FoodDetails
     },
     { // 店铺
       path: '/shop',

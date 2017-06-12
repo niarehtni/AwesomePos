@@ -21,8 +21,8 @@
                 </div>
                 <div class="btns">
                   <el-button type="warnning">挂单</el-button>
-                  <el-button type="danger">删除</el-button>
-                  <el-button type="success">结账</el-button>
+                  <el-button type="danger" @click="deleteAllOrder()">删除</el-button>
+                  <el-button type="success" @click="checkout()">结账</el-button>
                 </div>
               </el-tab-pane>
               <el-tab-pane label="挂单">
@@ -45,12 +45,15 @@
                   <el-button :plain="true" @click="filterPrice(item.status)">{{ item.txt }}</el-button>
                 </a>
               </p>
-              <ul>
-                <li v-for="items in oftenGoods"  @click="addOrderList(items)">
-                  <span>{{items.goodsName}}</span>
-                  <span class="o-price">¥{{items.price}}元</span>
+              <ul class="cookList">
+                <li v-for="goods in oftenGoods">
+                    <span class="foodImg"><img :src="goods.goodsImg" width="100%"></span>
+                    <span class="foodName">{{goods.goodsName}}</span>
+                    <span class="foodPrice">￥{{goods.price}}元</span>
+                    <a href="javascript:void(0)" class="foodBuy"  v-on:click="addOrderList(goods)">购买<i class="icon iconfont icon-tianmaochaoshigouwuche"></i>
+                    </a>
                 </li>
-              </ul>
+                </ul>
             </div>
           </div>
           <!-- 下 -->
@@ -124,10 +127,6 @@ export default {
       tableData:[], // 点餐食品
       oftenGoods:[], // 常见商品
       typeGoods:[],
-      // type0Goods:[],  // 分类商品
-      // type1Goods:[],
-      // type2Goods:[],
-      // type3Goods:[],
       filterData:[ //筛选价格
         {
           txt:'全部',
@@ -161,10 +160,6 @@ export default {
     // 分类goods
     this.$store.dispatch('getTypeGoods').then(()=>{
       this.typeGoods = this.$store.state.tGoods;
-      // this.type0Goods = this.typeGoods[0];
-      // this.type1Goods = this.typeGoods[1];
-      // this.type2Goods = this.typeGoods[2];
-      // this.type3Goods = this.typeGoods[3];
     });
   },
   mounted:function() {
@@ -195,10 +190,6 @@ export default {
     },
     // 订单增加
     addOrderList(goods){
-      // 数量、总价置0
-      this.totalCount = 0;
-      this.totalMoney = 0;
-
       // 商品是否已经存在于订单列表
       let isHave = false;
       for(let i=0; i<this.tableData.length;i++) {
@@ -208,12 +199,8 @@ export default {
 
       // 存在给弹框提示、不存在直接添加
       if(isHave) {
-        this.uiAlert('该商品已经存在, 是否继续添加?','提示','确定','取消','warning','添加成功','success',500,
-          mmm =>{
-            let arr = this.tableData.filter( o=> o.goodsId==goods.goodsId );
-            arr[0].count++;
-          }
-        );
+        let arr = this.tableData.filter( o=> o.goodsId==goods.goodsId );
+        arr[0].count++;
       }else {
         let newsGood = {
           goodsId:goods.goodsId,
@@ -225,13 +212,46 @@ export default {
         this.mes('添加成功','success',500);
       }
 
-      this.tableData.forEach((element) => {
-        this.totalCount += element.count;
-        this.totalMoney = this.totalMoney+(element.count * element.price);
-      });
+      this.getAllMoney();      
     },
-    // 删除订单
+    // 删除单个订单
     deleteOrderList(goods) {
+      this.tableData = this.tableData.filter( o=>o.goodsId != goods.goodsId );
+      this.mes("删除成功","success",500);
+      this.getAllMoney();
+    },
+    // 删除全部订单
+    deleteAllOrder(){
+      if(this.totalCount == 0){
+        this.mes("账单为空，删除失败","error",1000);
+      }else{
+        this.tableData=[],
+        this.totalCount=0;
+        this.totalMoney=0;
+        this.mes("删除成功","success",500);
+      }
+    },
+    // 计算总数量、总金额
+    getAllMoney(){
+      this.totalCount = 0;
+      this.totalMoney = 0;
+      if(this.tableData) {
+        this.tableData.forEach((element) => {
+          this.totalCount += element.count;
+          this.totalMoney = this.totalMoney+(element.count * element.price);
+        });
+      }
+    },
+    // 结账
+    checkout(){
+      if(this.totalCount == 0) {
+        this.mes("账单为空，结账失败","error",3000);
+      }else {
+        this.tableData=[],
+        this.totalCount=0;
+        this.totalMoney=0;
+        this.mes("结账成功，正在打印账单.....","success",3000);
+      }
     },
     // 筛选常用商品
     filterPrice(status){
@@ -280,7 +300,7 @@ export default {
 }
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
   .pos-order {
     height: 100%;
     background-color: #F9FAFC;
@@ -315,52 +335,7 @@ export default {
         margin: 0 4px;
       }
   }
-  .often-gooos-list ul li{
-    list-style: none;
-    float:left;
-    border:1px solid #E5E9F2;
-    padding: 10px;
-    margin:10px;
-    background-color: #fff;
-    cursor: pointer;
-
-    &:hover { border:1px solid #1D8CE0; }
-    .o-price {
-      color: #5887FF;
-    }
-  }
   .goods-type {
     clear: both;
   }
-  .cookList li{
-       list-style: none;
-       width:23%;
-       border:1px solid #E5E9F2;
-       height: auot;
-       overflow: hidden;
-       background-color:#fff;
-       padding: 2px;
-       float:left;
-       margin: 2px;
- 
-   }
-   .cookList li span{
-       
-        display: block;
-        float:left;
-   }
-   .foodImg{
-       width: 40%;
-   }
-   .foodName{
-       font-size: 18px;
-       padding-left: 10px;
-       color:brown;
- 
-   }
-   .foodPrice{
-       font-size: 16px;
-       padding-left: 10px;
-       padding-top:10px;
-   }
 </style>
