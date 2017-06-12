@@ -7,6 +7,7 @@ import ShopInit from '@/components/shop/shopInit'
 import Goods from '@/components/page/goods'
 import Member from '@/components/page/member'
 import Set from '@/components/page/set'
+import Error from '@/components/common/error'
 
 Vue.use(Router)
 
@@ -41,6 +42,10 @@ export default new Router({
       path: '/set',
       name: 'Set',
       component: Set
+    },
+    { // 404page
+      path: '*',
+      component: Error
     },
   ]
 })

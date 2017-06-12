@@ -1,7 +1,7 @@
 <template>
   <div class="left-nav">
         <ul>
-            <router-link tag="li" :to="{ path:'/' }" class="on">
+            <router-link tag="li" :to="{ path:'/' }" >
                 <i class="icon iconfont icon-goumai"></i>
                 <div>收银</div>
             </router-link>
@@ -55,7 +55,7 @@ export default {
                     background:#5d96c1;
                 }
             }
-            .on {
+            .router-link-exact-active.router-link-active{
                 background:#5d96c1;
             }
         }
