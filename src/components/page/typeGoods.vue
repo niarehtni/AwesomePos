@@ -4,13 +4,13 @@
             <el-tab-pane label="汉堡">
             <div>
                 <ul class="cookList">
-                <li v-for="goods in type0Goods">
+                <li v-for="goods in data[0]">
                     <span class="foodImg"><img :src="goods.goodsImg" width="100%"></span>
                     <span class="foodName">{{goods.goodsName}}</span>
                     <span class="foodPrice">￥{{goods.price}}元</span>
                     <router-link tag="span" class="foodDetails" 
                     :to="{ name: 'FoodDetails', params: { foodImg: goods.goodsImg, foodName:goods.goodsName }}" >详情</router-link>
-                    <a href="javascript:void(0)" class="foodBuy" v-on:click="addOrderList()">
+                    <a  class="foodBuy"  v-on:click="handleClick(goods)">
                         购买
                         <i class="icon iconfont icon-tianmaochaoshigouwuche"></i>
                     </a>
@@ -21,11 +21,11 @@
             <el-tab-pane label="小食">
             <div>
                 <ul class="cookList">
-                <li v-for="goods in type1Goods">
+                <li v-for="goods in data[1]">
                     <span class="foodImg"><img :src="goods.goodsImg" width="100%"></span>
                     <span class="foodName">{{goods.goodsName}}</span>
                     <span class="foodPrice">￥{{goods.price}}元</span>
-                    <a href="javascript:void(0)" class="foodBuy">
+                    <a  class="foodBuy" v-on:click="handleClick(goods)">
                         购买
                         <i class="icon iconfont icon-tianmaochaoshigouwuche"></i>
                     </a>
@@ -36,11 +36,11 @@
             <el-tab-pane label="饮料">
             <div>
                 <ul class="cookList">
-                <li v-for="goods in type2Goods">
+                <li v-for="goods in data[2]">
                     <span class="foodImg"><img :src="goods.goodsImg" width="100%"></span>
                     <span class="foodName">{{goods.goodsName}}</span>
                     <span class="foodPrice">￥{{goods.price}}元</span>
-                    <a href="javascript:void(0)" class="foodBuy">
+                    <a v-on:click="handleClick(goods)" class="foodBuy">
                         购买
                         <i class="icon iconfont icon-tianmaochaoshigouwuche"></i>
                     </a>
@@ -51,11 +51,11 @@
             <el-tab-pane label="套餐">
             <div>
                 <ul class="cookList">
-                <li v-for="goods in type3Goods">
+                <li v-for="goods in data[3]">
                     <span class="foodImg"><img :src="goods.goodsImg" width="100%"></span>
                     <span class="foodName">{{goods.goodsName}}</span>
                     <span class="foodPrice">￥{{goods.price}}元</span>
-                    <a href="javascript:void(0)" class="foodBuy">
+                    <a v-on:click="handleClick(goods)" class="foodBuy">
                         购买
                         <i class="icon iconfont icon-tianmaochaoshigouwuche"></i>
                     </a>
@@ -73,19 +73,24 @@ export default {
     props:['data'],
     data(){
         return{
-            type0Goods:[],  // 分类商品
-            type1Goods:[],
-            type2Goods:[],
-            type3Goods:[]
+            // type0Goods:[],  // 分类商品
+            // type1Goods:[],
+            // type2Goods:[],
+            // type3Goods:[]
         }
     },
     created:function(){
-        this.$watch('data', function(newVal, oldVal){
-            this.type0Goods =newVal[0];
-            this.type1Goods =newVal[1];
-            this.type2Goods =newVal[2];
-            this.type3Goods =newVal[3];
-        });
+        // this.$watch('data', function(newVal, oldVal){
+        //     this.type0Goods =newVal[0];
+        //     this.type1Goods =newVal[1];
+        //     this.type2Goods =newVal[2];
+        //     this.type3Goods =newVal[3];
+        // });
+    },
+    methods:{
+        handleClick(goods){
+            this.$emit("addOL",goods);
+        },
     },
 }
 </script>
@@ -135,6 +140,7 @@ export default {
             border-radius: 4px;
             text-align: center;
             float:right;
+            cursor: pointer;
             margin:20px 4px 0 0;
             &:hover{
                 background-color: #8ba8f1;
