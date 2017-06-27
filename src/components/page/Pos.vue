@@ -21,7 +21,7 @@
                 </div>
                 <div class="btns">
                   <el-button type="warnning">挂单</el-button>
-                  <el-button type="danger" @click="deleteAllOrder()">删除</el-button>
+                  <el-button type="danger" @click="deleteAllOrder()">清空</el-button>
                   <el-button type="success" @click="checkout()">结账</el-button>
                 </div>
               </el-tab-pane>
